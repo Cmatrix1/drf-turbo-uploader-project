@@ -83,6 +83,7 @@ target/
 __pycache__/
 local_settings.py
 
+.venv
 .env
 db.sqlite3
 chunked_uploads
