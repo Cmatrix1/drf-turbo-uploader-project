@@ -27,6 +27,7 @@ class FileCreateView(APIView):
 
 class ChunkUploadView(APIView):
     model = ChunkModel
+    model_file = FileModel
     serializer_class = ChunkCreateSerializer
     response_serializer_class = FileSerializer
     file_field_name = "file"
@@ -60,7 +61,7 @@ class ChunkUploadView(APIView):
     def _post(self, request: HttpRequest, pk: str):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        file = get_object_or_404(FileModel.objects.only("pk"), pk=pk)
+        file = get_object_or_404(self.model_file.objects.only("pk"), pk=pk)
         
         self.validate_order(file, serializer.validated_data.get("order"))
         chunk = self.validate_chunk_file(request.data)

@@ -3,10 +3,8 @@ import uuid
 
 from django.db import models, transaction
 from django.conf import settings
-from django.core.files.uploadedfile import UploadedFile
 from django.utils import timezone
 
-from upload import settings as _settings
 from upload.utils import convert_size
 
 
@@ -14,13 +12,13 @@ AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 def generate_chunk_filename(instance, filename):
-    upload_dir = _settings.UPLOAD_PATH + "/" + str(instance.file.id)
-    filename = os.path.join(upload_dir, str(instance.order) + _settings.INCOMPLETE_EXT)
+    upload_dir = settings.UPLOAD_PATH + "/" + str(instance.file.id)
+    filename = os.path.join(upload_dir, f"{str(instance.order)}.part")
     return filename
 
 
 def generate_file_name(file_id, file_name):
-    upload_dir = _settings.UPLOAD_PATH + "\\" + str(file_id)
+    upload_dir = settings.UPLOAD_PATH + "\\" + str(file_id)
     filename = os.path.join(upload_dir, file_name)
     return filename
 
@@ -38,7 +36,6 @@ class FileModel(models.Model):
     )
     file = models.FileField(
         max_length=255,
-        storage=_settings.STORAGE,
         null=True,
     )
     filename = models.CharField(max_length=255)
@@ -105,7 +102,6 @@ class ChunkModel(models.Model):
     chunk = models.FileField(
         max_length=255,
         upload_to=generate_chunk_filename,
-        storage=_settings.STORAGE,
         null=True,
     )
     size = models.BigIntegerField()
