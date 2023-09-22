@@ -20,7 +20,7 @@ I hope this helps! Let me know if you have any other questions.
 
 
 ## Python Client
-Here's a sample Python client for this library that shows you how to upload a file in chunks. 🚀
+Here's a sample Python client for this Project that shows you how to upload a file in chunks. 🚀
 ```python
 
 import requests
